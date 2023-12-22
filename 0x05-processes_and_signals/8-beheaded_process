@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#it was killing , now it's beheading a process (god plese kill me)
+
+pgrep -f 7-highlander | xargs kill -SIGKILL

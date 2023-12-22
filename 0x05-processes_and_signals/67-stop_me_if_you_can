@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#killing a process without using kill or killall
+
+pkill -f "7-highlander"
