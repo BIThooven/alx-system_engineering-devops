@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#killing a process again (this killed me rather than killing the process)
+
+trap 'echo "I am invincible!!!"' SIGTERM
+while true; do
+  echo "To infinity and beyond"
+  sleep 2
+done
