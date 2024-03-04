@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#configuring a the server web-01 to be identical to web-02
+
+sudo apt -y update
+sudo apt install -y nginx
+
+
+sudo mkdir -p /var/www/html
+sudo chmod -R 755 /var/www
+
+echo "Hello World!" > index.html
+echo "Ceci n'est pas une page" > 404.html
+
+cat > /etc/nginx/sites-available/default << _EOL_
+server{
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    add_header X-Served-By \$HOSTNAME;
+    location / {
+        rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
+	    error_page 404 /404.html;
+        try_files \$uri \$uri/ =404;
+    }
+}
+_EOL_
+
+sudo service nginx restart
