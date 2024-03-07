@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# This script fixes an error made in the previous task
-
+# same as task 0 but -f added to ln command
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 sudo service nginx restart
 rm /run/nginx.pid
