@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# This script will configure my domain zone
+#shellcheck disable=SC2086
+
+if [ "$#" = 1 ]
+then
+    subdomain=("www" "lb-01" "web-01" "web-02")
+    for i in "${subdomain[@]}"
+    do
+        record=$(dig $i.$1 | grep -A1 "ANSWER SECTION" | tail -1 | awk '{print $4}')
+        destination=$(dig $i.$1 | grep -A1 "ANSWER SECTION" | tail -1 | awk '{print $5}')
+        echo "the subdomain $i is a $record record and points to $destination"
+    done
+elif [ "$#" = 2 ]
+then 
+    record=$(dig $2.$1 | grep -A1 "ANSWER SECTION" | tail -1 | awk '{print $4}')
+    destination=$(dig $2.$1 | grep -A1 "ANSWER SECTION" | tail -1 | awk '{print $5}')
+    echo "the subdomain $2 is a $record record and points to $destination"
+else
+    echo "Usage: $0 domain [subdomain]"
+    exit 1
+fi
