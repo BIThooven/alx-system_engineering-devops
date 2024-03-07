@@ -3,5 +3,5 @@
 
 cd /etc/nginx/sites-enabled/ || exit;
 rm -f default;
-sed -i 's/80 default_server/80/g' /etc/nginx/sites-available/default;
+ln -s /etc/nginx/sites-available/default default;
 service nginx restart;
