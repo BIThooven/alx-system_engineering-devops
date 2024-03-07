@@ -1,0 +1,7 @@
+#!/usr/bin/python3
+#Fix the container so that Nginx is running as the main process
+
+cd /etc/nginx/sites-enabled/ || exit;
+rm -f default;
+sed -i 's/80 default_server/80/g' /etc/nginx/sites-available/default;
+service nginx restart;
