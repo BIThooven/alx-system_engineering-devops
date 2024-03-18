@@ -1,0 +1,16 @@
+# Check the status of ufw to make sure it is active by running:
+
+sudo ufw status
+
+sudo ufw enable
+
+sudo ufw default deny incomming
+
+sudo ufw default allow outgoing
+
+sudo ufw allow 22/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 80/tcp
+
+sudo ufw show added
+sudo ufw enable
