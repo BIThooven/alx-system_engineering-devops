@@ -1,28 +1,24 @@
 #!/usr/bin/python3
-"""exporting infos to a csv"""
+""" Export api to csv"""
+import csv
 import requests
-import re
 import sys
 
+if __name__ == '__main__':
+    user = sys.argv[1]
+    url_user = 'https://jsonplaceholder.typicode.com/users/' + user
+    res = requests.get(url_user)
+    """ANYTHING"""
+    user_name = res.json().get('username')
+    task = url_user + '/todos'
+    res = requests.get(task)
+    tasks = res.json()
 
-REST_URL = 'https://jsonplaceholder.typicode.com'
-
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if re.fullmatch(r'\d+', sys.argv[1]):
-            id = int(sys.argv[1])
-            user_res = requests.get('{}/users/{}'.format(REST_URL, id)).json()
-            todos_res = requests.get('{}/todos'.format(REST_URL)).json()
-            user_name = user_res.get('username')
-            todos = list(filter(lambda x: x.get('userId') == id, todos_res))
-            with open('{}.csv'.format(id), 'w') as file:
-                for todo in todos:
-                    file.write(
-                        '"{}","{}","{}","{}"\n'.format(
-                            id,
-                            user_name,
-                            todo.get('completed'),
-                            todo.get('title')
-                        )
-                    )
+    with open('{}.csv'.format(user), 'w') as csvfile:
+        for task in tasks:
+            completed = task.get('completed')
+            """Complete"""
+            title_task = task.get('title')
+            """Done"""
+            csvfile.write('"{}","{}","{}","{}"\n'.format(
+                user, user_name, completed, title_task))
