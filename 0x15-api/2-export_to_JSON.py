@@ -1,25 +1,30 @@
 #!/usr/bin/python3
 """A Python script that, for a given employee ID
 """
+import requests
+import sys
+import csv
+import json
+
 if __name__ == '__main__':
-    import json
-    import requests
-    import sys
+    USER_ID = sys.argv[1]
+    url_to_user = 'https://jsonplaceholder.typicode.com/users/' + USER_ID
+    res = requests.get(url_to_user)
+    """Documentation"""
+    USERNAME = res.json().get('username')
+    """Documentation"""
+    url_to_task = url_to_user + '/todos'
+    res = requests.get(url_to_task)
+    tasks = res.json()
 
-    if len(sys.argv) != 2:
-        print(f'Usage: {sys.argv[0]} <user_id>', file=sys.stderr)
-        exit(1)
-
-    user_id = sys.argv[1]
-    url = f'https://jsonplaceholder.typicode.com/users/{user_id}'
-    name = requests.get(url).json().get('username')
-
-    url = f'https://jsonplaceholder.typicode.com/users/{user_id}/todos'
-    tasks = requests.get(url).json()
-
-    with open(f'{user_id}.json', 'w', encoding='utf-8') as jsonfile:
-        json.dump({user_id: [{
-            'task': task.get('title'),
-            'completed': task.get('completed'),
-            'username': name
-        } for task in tasks]}, jsonfile, indent=2)
+    dict_data = {USER_ID: []}
+    for task in tasks:
+        TASK_COMPLETED_STATUS = task.get('completed')
+        TASK_TITLE = task.get('title')
+        dict_data[USER_ID].append({
+                                  "task": TASK_TITLE,
+                                  "completed": TASK_COMPLETED_STATUS,
+                                  "username": USERNAME})
+    """print(dict_data)"""
+    with open('{}.json'.format(USER_ID), 'w') as f:
+        json.dump(dict_data, f)
