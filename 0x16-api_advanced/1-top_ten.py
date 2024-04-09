@@ -5,7 +5,7 @@ from requests import get
 from sys import argv
 
 
-def top_ten(subreddit: str) -> None:
+def top_ten(subreddit: str):
     """
     function that does the heavy lifting for us
     Args:
