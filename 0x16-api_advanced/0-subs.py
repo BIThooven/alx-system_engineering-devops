@@ -1,18 +1,36 @@
 #!/usr/bin/python3
-"""number of subs for a subreddit"""
+
+"""
+Query a subreddit and return the number of
+total subscribers in that subredit
+"""
+
 from requests import get
+from sys import argv
 
 
-def number_of_subscribers(subreddit):
-    if subreddit is None or not isinstance(subreddit, str):
-        return 0
+headers = {
+    "User-Agent": "User-Agent",
+    "X-Forwared-For": "iamnobody"
+}
 
-    user = {'User-Agent': 'Google Chrome Version 123.0.6312.106'}
-    Url = 'https://www.reddit.com/r/{}/about.json'.format(subreddit)
-    response = get(Url, headers=user)
-    res = response.json()
 
+def number_of_subscribers(subreddit: str) -> int:
+    """
+    Query the subreddit and return the number of
+    Active subs. If its an invalid subredit, return 0
+    """
+    response = get("https://www.reddit.com/r/{}/about.json".format(subreddit),
+                   headers=headers)
+    data = response.json()
     try:
-        return res.get('data').get('subscribers')
-    except Exception:
+        if 'error' in data.keys():
+            return 0
+        else:
+            return data['data']['subscribers']
+    except Exception as e:
         return 0
+
+
+if __name__ == "__main__":
+    print(number_of_subscribers(argv[1]))
