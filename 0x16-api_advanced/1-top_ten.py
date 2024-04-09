@@ -6,12 +6,6 @@ from sys import argv
 
 
 def top_ten(subreddit: str):
-    """
-    function that does the heavy lifting for us
-    Args:
-        subreddit (str) -> The subreddit to query
-    Returns: The top 10 hots for that subreddit
-    """
     headers = {
         "User-Agent": "Just a bunch of crap",
         "X-Forwared-For": "Amaterasu"
